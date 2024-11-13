@@ -232,3 +232,62 @@ function references_element_validate_integer_positive($element, &$form_state) {
     form_error($element, t('%name must be a positive integer.', array('%name' => $element['#title'])));
   }
 }
+
+/**
+ * Implements hook_config_info().
+ */
+function references_config_info() {
+  return array(
+    'references.settings' => array(
+      'label' => t('References settings'),
+      'group' => t('Configuration'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function references_menu() {
+  $items['admin/config/content/references'] = array(
+      'title' => 'References settings',
+      'description' => 'Configure References.',
+      'page callback' => 'backdrop_get_form',
+      'page arguments' => array('references_configuration_form'),
+      'access arguments' => array('administer references'),
+  );
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function references_permission() {
+  return array(
+    'administer references' => array(
+      'title' => t('Administer References'),
+    ),
+  );
+}
+
+/**
+ * References configuration form.
+ */
+function references_configuration_form($form, &$form_state) {
+  // Form values will be saved to this config file. See system_settings_form().
+  $form['#config'] = 'references.settings';
+
+  // Use $config->get() for default values.
+  $config = config('references.settings');
+
+  $form['potential_references_limit'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Potential references limit'),
+    '#default_value' => $config->get('potential_references_limit'),
+    '#description' => t('This limit is used in various places (allowed values, autocomplete results, input validation...).'),
+  );
+
+  return system_settings_form($form);
+}

@@ -847,13 +847,14 @@ function _node_reference_options($field, $flat = TRUE) {
  * @codingStandardsIgnoreStart
  */
 function node_reference_potential_references($field, $options = array()) {
+  $config = config('references.settings');
   // @codingStandardsIgnoreEnd
   // Fill in default options.
   $options += array(
     'string' => '',
     'match' => 'contains',
     'ids' => array(),
-    'limit' => 25,
+    'limit' => $config->get('potential_references_limit'),
   );
 
   $results = &backdrop_static(__FUNCTION__, array());
