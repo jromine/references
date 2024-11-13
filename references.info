@@ -4,6 +4,7 @@ package = Fields
 core = 7.x
 backdrop = 1.x
 type = module
+configure = admin/config/content/references
 dependencies[] = field
 dependencies[] = options
 files[] = views/references_handler_relationship.inc
